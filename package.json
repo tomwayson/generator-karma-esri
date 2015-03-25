@@ -1,0 +1,36 @@
+{
+  "name": "generator-karma-esri",
+  "version": "0.0.0",
+  "description": "Yeoman generator",
+  "license": "MIT",
+  "main": "app/index.js",
+  "repository": "tomwayson/generator-karma-esri",
+  "author": {
+    "name": "Tom Wayson",
+    "email": "",
+    "url": "https://github.com/tomwayson"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "files": [
+    "app"
+  ],
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "peerDependencies": {
+    "generator-karma": "*"
+  },
+  "dependencies": {
+    "yeoman-generator": "^0.18.9",
+    "chalk": "^1.0.0",
+    "yosay": "^1.0.2"
+  },
+  "devDependencies": {
+    "mocha": "*"
+  }
+}
