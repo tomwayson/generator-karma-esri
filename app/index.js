@@ -17,6 +17,11 @@ module.exports = yeoman.generators.Base.extend({
     ));
 
     var prompts = [{
+      type: 'input',
+      name: 'jsapiBase',
+      message: 'Location of ArcGIS API for JavaScript?',
+      default: 'http://js.arcgis.com/3.13'
+    }, {
       type: 'list',
       name: 'testFramework',
       message: 'What test framework would you like to use?',
@@ -36,7 +41,7 @@ module.exports = yeoman.generators.Base.extend({
     }];
 
     this.prompt(prompts, function (props) {
-      console.log()
+      this.jsapiBase = props.jsapiBase;
       this.testFramework = props.testFramework.toLowerCase();
       this.browsers = props.browsers;
       done();
@@ -53,6 +58,11 @@ module.exports = yeoman.generators.Base.extend({
   },
 
   writing: function() {
+    this.fs.copyTpl(
+      this.templatePath('test/_config.js'),
+      this.destinationPath('test/config.js'),
+      { jsapiBase: this.jsapiBase }
+    );
     this.fs.copy(
       this.templatePath('test/jshintrc'),
       this.destinationPath('test/.jshintrc')
