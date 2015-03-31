@@ -52,7 +52,17 @@ module.exports = yeoman.generators.Base.extend({
     this.composeWith('karma', {
       options: {
         'skip-install': this.options['skip-install'],
+        'config-path': './',
+        'files-comments': 'TODO: add spec and source file patterns making sure to,set included:false since they are AMD modules,see: https://github.com/tomwayson/esri-karma-tutorial/blob/master/karma.conf.js#L13',
+        'test-files': 'test/config.js',
+        // TODO: need to add source and spec patterns
+        // but can't b/c they get split on nested commas:
+        // { pattern: 'app/**/*.js', included: false },
+        // { pattern: 'test/spec/**/*.js', included: false }
+        // TODO: replace these w/ frameworks
         'test-framework': this.testFramework,
+        // TODO: prompt for chai if mocha?
+        'other-frameworks': this.testFramework === 'mocha' ? 'dojo,chai' : 'dojo',
         browsers: this.browsers.join(',')
       }});
   },
@@ -62,6 +72,11 @@ module.exports = yeoman.generators.Base.extend({
       this.templatePath('test/_config.js'),
       this.destinationPath('test/config.js'),
       { jsapiBase: this.jsapiBase }
+    );
+    this.fs.copyTpl(
+      this.templatePath('test/spec/_sanity.js'),
+      this.destinationPath('test/spec/sanity.js'),
+      { testFramework: this.testFramework }
     );
     this.fs.copy(
       this.templatePath('test/jshintrc'),

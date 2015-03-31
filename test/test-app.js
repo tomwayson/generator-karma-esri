@@ -32,8 +32,10 @@ describe('karma-esri:app', function () {
 
   it('templates files', function () {
     assert.file([
-      'test/config.js'
+      'test/config.js',
+      'test/spec/sanity.js'
     ]);
     assert.fileContent('test/config.js', prompt.jsapiBase);
+    assert.fileContent('test/spec/sanity.js', /expect\(1\)\.to\.equal\(1\);/);
   });
 });
