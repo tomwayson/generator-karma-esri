@@ -48,11 +48,25 @@ module.exports = yeoman.generators.Base.extend({
         {value: 'Safari', name: 'Safari (OSX)'},
         {value: 'IE', name: 'IE (Windows)'}
       ]
+    }, {
+      type: 'confirm',
+      name: 'useGrunt',
+      message: 'Would you like to run Karma from Grunt?',
+      default: true
+    }, {
+      type: 'input',
+      name: 'gruntfilePath',
+      when: function(answers) {
+        return answers.useGrunt;
+      },
+      message: 'Path to your Grunt file:',
+      default: 'Gruntfile.js'
     }];
 
     this.prompt(prompts, function (props) {
       this.jsapiBase = props.jsapiBase;
       this.testFramework = props.testFramework.toLowerCase();
+      this.gruntfilePath = props.useGrunt ? props.gruntfilePath : '';
       this.frameworks = [this.testFramework, 'dojo'].concat(props.additionalFrameworks);
       this.browsers = props.browsers;
       done();
@@ -63,15 +77,16 @@ module.exports = yeoman.generators.Base.extend({
     this.composeWith('karma', {
       options: {
         'skip-install': this.options['skip-install'],
-        'config-path': './',
-        'files-comments': 'TODO: add spec and source file patterns making sure to,set included:false since they are AMD modules,see: https://github.com/tomwayson/esri-karma-tutorial/blob/master/karma.conf.js#L13',
-        'test-files': 'test/config.js',
+        'config-path': '.',
+        frameworks: this.frameworks.join(','),
         // TODO: need to add source and spec patterns
         // but can't b/c they get split on nested commas:
         // { pattern: 'app/**/*.js', included: false },
         // { pattern: 'test/spec/**/*.js', included: false }
-        frameworks: this.frameworks.join(','),
-        browsers: this.browsers.join(',')
+        'files-comments': 'TODO: add spec and source file patterns making sure to,set included:false since they are AMD modules,see: https://github.com/tomwayson/esri-karma-tutorial/blob/master/karma.conf.js#L13',
+        'test-files': 'test/config.js',
+        browsers: this.browsers.join(','),
+        'gruntfile-path': this.gruntfilePath
       }});
   },
 
