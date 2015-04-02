@@ -29,6 +29,16 @@ module.exports = yeoman.generators.Base.extend({
       default: 'Jasmine'
     }, {
       type: 'checkbox',
+      name: 'additionalFrameworks',
+      message: 'Would you like to include any additional frameworks?',
+      choices: function(answers) {
+        return [
+          { value: 'chai', name: 'Chai assertion library (for Mocha)', checked: answers.testFramework === 'Mocha' },
+          { value: 'sinon', name: 'SinonJS for spies, fakes, and mocks' },
+        ];
+      }
+    }, {
+      type: 'checkbox',
       name: 'browsers',
       message: 'What browsers do you want to run tests in?',
       choices: [
@@ -43,6 +53,7 @@ module.exports = yeoman.generators.Base.extend({
     this.prompt(prompts, function (props) {
       this.jsapiBase = props.jsapiBase;
       this.testFramework = props.testFramework.toLowerCase();
+      this.frameworks = [this.testFramework, 'dojo'].concat(props.additionalFrameworks);
       this.browsers = props.browsers;
       done();
     }.bind(this));
@@ -59,10 +70,7 @@ module.exports = yeoman.generators.Base.extend({
         // but can't b/c they get split on nested commas:
         // { pattern: 'app/**/*.js', included: false },
         // { pattern: 'test/spec/**/*.js', included: false }
-        // TODO: replace these w/ frameworks
-        'test-framework': this.testFramework,
-        // TODO: prompt for chai if mocha?
-        'other-frameworks': this.testFramework === 'mocha' ? 'dojo,chai' : 'dojo',
+        frameworks: this.frameworks.join(','),
         browsers: this.browsers.join(',')
       }});
   },
