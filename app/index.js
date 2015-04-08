@@ -16,6 +16,7 @@ module.exports = yeoman.generators.Base.extend({
       'So, you want to have ' + chalk.cyan('Karma') + ' run tests for your ' + chalk.magenta('Esri') + ' app? I can help with that!'
     ));
 
+    // then grill'em
     var prompts = [{
       type: 'input',
       name: 'jsapiBase',
@@ -90,37 +91,33 @@ module.exports = yeoman.generators.Base.extend({
       }});
   },
 
-  writing: function() {
-    this.fs.copyTpl(
-      this.templatePath('test/_config.js'),
-      this.destinationPath('test/config.js'),
-      { jsapiBase: this.jsapiBase }
-    );
-    this.fs.copyTpl(
-      this.templatePath('test/spec/_sanity.js'),
-      this.destinationPath('test/spec/sanity.js'),
-      { testFramework: this.testFramework }
-    );
-    this.fs.copy(
-      this.templatePath('test/jshintrc'),
-      this.destinationPath('test/.jshintrc')
-    );
-    if (this.fs.exists(this.destinationPath('package.json'))) {
-      return;
+  writing: {
+    templates: function() {
+      this.fs.copyTpl(
+        this.templatePath('test/_config.js'),
+        this.destinationPath('test/config.js'),
+        { jsapiBase: this.jsapiBase }
+      );
+      this.fs.copyTpl(
+        this.templatePath('test/spec/_sanity.js'),
+        this.destinationPath('test/spec/sanity.js'),
+        { testFramework: this.testFramework }
+      );
+      this.fs.copy(
+        this.templatePath('test/jshintrc'),
+        this.destinationPath('test/.jshintrc')
+      );
+    },
+    // NOTE: this feels hacky, but generator-karma
+    // throws errors if it can't write to package.json
+    packageJson: function() {
+      if (this.fs.exists(this.destinationPath('package.json'))) {
+        return;
+      }
+      this.fs.copy(
+        this.templatePath('_package.json'),
+        this.destinationPath('package.json')
+      );
     }
-    this.fs.copy(
-      this.templatePath('_package.json'),
-      this.destinationPath('package.json')
-    );
-  },
-
-  install: function () {
-    // if (this.options['skip-install']) {
-    //   return;
-    // }
-    // this.npmInstall(['karma-dojo'], { 'saveDev': true });
-    // this.installDependencies({
-    //   skipInstall: this.options['skip-install']
-    // });
   }
 });

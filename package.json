@@ -1,6 +1,6 @@
 {
   "name": "generator-karma-esri",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Yeoman generator",
   "license": "MIT",
   "main": "app/index.js",
@@ -23,7 +23,7 @@
     "yeoman-generator"
   ],
   "peerDependencies": {
-    "generator-karma": "*"
+    "generator-karma": ">=1.0.0"
   },
   "dependencies": {
     "yeoman-generator": "^0.18.9",

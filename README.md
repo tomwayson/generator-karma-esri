@@ -1,27 +1,16 @@
 # generator-karma-esri [![Build Status](https://secure.travis-ci.org/tomwayson/generator-karma-esri.png?branch=master)](https://travis-ci.org/tomwayson/generator-karma-esri)
 
-> [Yeoman](http://yeoman.io) generator
+> A [Yeoman](http://yeoman.io) generator to configure [Karma] to run unit tests to your [ArcGIS API for JavaScript] application
 
+See [my tutorial] for more on running unit tests with Karma in ArcGIS API for JavaScript apps.
 
 ## Getting Started
 
-### What is Yeoman?
-
-Trick question. It's not a thing. It's this guy:
-
-![](http://i.imgur.com/JHaAlBJ.png)
-
-Basically, he wears a top hat, lives in your computer, and waits for you to tell him what kind of application you wish to create.
-
-Not every new computer comes with a Yeoman pre-installed. He lives in the [npm](https://npmjs.org) package repository. You only have to ask for him once, then he packs up and moves into your hard drive. *Make sure you clean up, he likes new and shiny things.*
+Install [Yeoman] (if you haven't already)
 
 ```bash
 npm install -g yo
 ```
-
-### Yeoman Generators
-
-Yeoman travels light. He didn't pack any generators when he moved in. You can think of a generator like a plug-in. You get to choose what type of application you wish to create, such as a Backbone application or even a Chrome extension.
 
 To install generator-karma-esri from npm, run:
 
@@ -34,14 +23,36 @@ Finally, initiate the generator:
 ```bash
 yo karma-esri
 ```
+Answer the man's questions. When in doubt, you'll probably be safe with the defaults.
 
-### Getting To Know Yeoman
+![](./screenshot.png)
 
-Yeoman has a heart of gold. He's a person with feelings and opinions, but he's very easy to work with. If you think he's too opinionated, he can be easily convinced.
+## Running Tests with Karma
 
-If you'd like to get to know Yeoman better and meet some of his friends, [Grunt](http://gruntjs.com) and [Bower](http://bower.io), check out the complete [Getting Started Guide](https://github.com/yeoman/yeoman/wiki/Getting-Started).
+After running the generator you'll want to tell Karma where your source code and test spec files can be found. Open karma.config.js and update the `files` section with the paths where those files can be found. Be sure to set `included:false` since these will be loaded by Dojo's AMD loader. For example:
+```js
+    // list of files / patterns to load in the browser
+    files: [
+      // karma and dojo config
+      'test/config.js',
+      // source code
+      { pattern: 'app/**/*.js', included:false },
+      // test specs
+      { pattern: 'test/spec/**/*.js', included:false }
+    ],
+```
 
+After that you can run Karma with:
+```bash
+karma start
+```
+
+See [my tutorial] for more on running unit tests with Karma in ArcGIS API for JavaScript apps.
 
 ## License
 
-MIT
+Apache
+
+[Karma]: http://karma-runner.github.io/
+[ArcGIS API for JavaScript]: https://developers.arcgis.com/javascript/
+[my tutorial]: https://github.com/tomwayson/esri-karma-tutorial

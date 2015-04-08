@@ -14,8 +14,8 @@
     packages: [
       // TODO: add your local pacakges here, example:
       // {
-      //     name:"app",
-      //     location:"/base/src/app"
+      //   name: 'app',
+      //   location: '/base/src/app'
       // },
 
       // esri/dojo packages
