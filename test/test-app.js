@@ -3,7 +3,7 @@
 var path = require('path');
 var assert = require('yeoman-generator').assert;
 var helpers = require('yeoman-generator').test;
-var os = require('os');
+var fs = require('fs');
 
 describe('karma-esri:app', function () {
   var prompt = {
@@ -16,7 +16,14 @@ describe('karma-esri:app', function () {
       [helpers.createDummyGenerator(), 'karma:app']
     ];
     helpers.run(path.join(__dirname, '../app'))
-      .inDir(path.join(os.tmpdir(), './temp-test'))
+      // generator-karma needs package.json to run
+      // so copy dummy package.json to test directory
+      // TODO: should also test that err is shown if no package.json
+      .inTmpDir(function(dir) {
+        var sourceFile = path.join(__dirname, '_package.json');
+        var targetFile = path.join(dir, 'package.json');
+        fs.writeFileSync(targetFile, fs.readFileSync(sourceFile));
+      })
       .withOptions({ 'skip-install': true })
       .withPrompt(prompt)
       .withGenerators(deps)
@@ -25,7 +32,6 @@ describe('karma-esri:app', function () {
 
   it('copies files', function () {
     assert.file([
-      'package.json',
       'test/.jshintrc'
     ]);
   });
@@ -35,7 +41,7 @@ describe('karma-esri:app', function () {
       'test/config.js',
       'test/spec/sanity.js'
     ]);
-    assert.fileContent('test/config.js', prompt.jsapiBase);
+    assert.fileContent('test/config.js', new RegExp(prompt.jsapiBase));
     assert.fileContent('test/spec/sanity.js', /expect\(1\)\.to\.equal\(1\);/);
   });
 });

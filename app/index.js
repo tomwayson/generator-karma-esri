@@ -4,10 +4,20 @@ var chalk = require('chalk');
 var yosay = require('yosay');
 
 module.exports = yeoman.generators.Base.extend({
+
+  // get this party started
   initializing: function () {
+    // karma generator requires package.json
+    // if it doesn't exist, show error to user and exit
+    if (!this.fs.exists(this.destinationPath('package.json'))) {
+      this.env.error('No package.json file found. Please create one (i.e. with "npm init")');
+    }
+
+    // get ref to generator's package.json
     this.pkg = require('../package.json');
   },
 
+  // prompt user for JSAPI location, test framework, etc
   prompting: function () {
     var done = this.async();
 
@@ -74,6 +84,7 @@ module.exports = yeoman.generators.Base.extend({
     }.bind(this));
   },
 
+  // run karma generator w/ options based on prompts
   karma: function() {
     this.composeWith('karma', {
       options: {
@@ -88,36 +99,27 @@ module.exports = yeoman.generators.Base.extend({
         'test-files': 'test/config.js',
         browsers: this.browsers.join(','),
         'gruntfile-path': this.gruntfilePath
-      }});
+      }
+    }, {
+      local: require.resolve('generator-karma')
+    });
   },
 
-  writing: {
-    templates: function() {
-      this.fs.copyTpl(
-        this.templatePath('test/_config.js'),
-        this.destinationPath('test/config.js'),
-        { jsapiBase: this.jsapiBase }
-      );
-      this.fs.copyTpl(
-        this.templatePath('test/spec/_sanity.js'),
-        this.destinationPath('test/spec/sanity.js'),
-        { testFramework: this.testFramework }
-      );
-      this.fs.copy(
-        this.templatePath('test/jshintrc'),
-        this.destinationPath('test/.jshintrc')
-      );
-    },
-    // NOTE: this feels hacky, but generator-karma
-    // throws errors if it can't write to package.json
-    packageJson: function() {
-      if (this.fs.exists(this.destinationPath('package.json'))) {
-        return;
-      }
-      this.fs.copy(
-        this.templatePath('_package.json'),
-        this.destinationPath('package.json')
-      );
-    }
+  // write out files specific to karma-dojo
+  writing: function() {
+    this.fs.copyTpl(
+      this.templatePath('test/_config.js'),
+      this.destinationPath('test/config.js'),
+      { jsapiBase: this.jsapiBase }
+    );
+    this.fs.copyTpl(
+      this.templatePath('test/spec/_sanity.js'),
+      this.destinationPath('test/spec/sanity.js'),
+      { testFramework: this.testFramework }
+    );
+    this.fs.copy(
+      this.templatePath('test/jshintrc'),
+      this.destinationPath('test/.jshintrc')
+    );
   }
 });
