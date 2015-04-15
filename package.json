@@ -1,14 +1,20 @@
 {
   "name": "generator-karma-esri",
   "version": "0.0.1",
-  "description": "Yeoman generator",
-  "license": "MIT",
+  "description": "Yeoman generator to add the Karma test runner to an Esri ArcGIS for JavaScript API app",
+  "license": "Apache-2.0",
   "main": "app/index.js",
-  "repository": "tomwayson/generator-karma-esri",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tomwayson/generator-karma-esri.git"
+  },
   "author": {
     "name": "Tom Wayson",
-    "email": "",
+    "email": "tom@tomwayson.com",
     "url": "https://github.com/tomwayson"
+  },
+  "bugs": {
+    "url" : "https://github.com/tomwayson/generator-karma-esri/issues"
   },
   "engines": {
     "node": ">=0.10.0"
@@ -20,7 +26,7 @@
     "app"
   ],
   "keywords": [
-    "yeoman-generator"
+    "yeoman-generator", "karma", "esri", "ArcGIS", "JavaScript"
   ],
   "dependencies": {
     "yeoman-generator": "^0.18.9",

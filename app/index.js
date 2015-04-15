@@ -95,7 +95,7 @@ module.exports = yeoman.generators.Base.extend({
         // but can't b/c they get split on nested commas:
         // { pattern: 'app/**/*.js', included: false },
         // { pattern: 'test/spec/**/*.js', included: false }
-        'files-comments': 'TODO: add spec and source file patterns making sure to,set included:false since they are AMD modules,see: https://github.com/tomwayson/esri-karma-tutorial/blob/master/karma.conf.js#L13',
+        'files-comments': 'TODO: add spec and source file patterns making sure to,set included:false since they are AMD modules,see: https://github.com/tomwayson/generator-karma-esri#running-tests-with-karma',
         'test-files': 'test/config.js',
         browsers: this.browsers.join(','),
         'gruntfile-path': this.gruntfilePath
